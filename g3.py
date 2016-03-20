@@ -42,11 +42,23 @@ class g3sensor():
 			if debug: print "get 4d"
 			return True
 		    
-    
+    def vertify_data(self, data):
+	if debug: print data
+        n = 2
+	sum = int('42',16)+int('4d',16)
+        for i in range(0, len(data)-4, n):
+            #print data[i:i+n]
+	    sum=sum+int(data[i:i+n],16)
+	versum = int(data[40]+data[41]+data[42]+data[43],16)
+	if debug: print sum
+        if debug: print versum
+	if sum == versum:
+	    print "data correct"
+	
     def read_data(self):
-        data = self.serial.read(28)
+        data = self.serial.read(22)
         data_hex=data.encode('hex')
-	if debug: print data_hex
+        if debug: self.vertify_data(data_hex)
         pm1_cf=int(data_hex[4]+data_hex[5]+data_hex[6]+data_hex[7],16)
         pm25_cf=int(data_hex[8]+data_hex[9]+data_hex[10]+data_hex[11],16)
         pm10_cf=int(data_hex[12]+data_hex[13]+data_hex[14]+data_hex[15],16)
@@ -73,4 +85,4 @@ class g3sensor():
 
 if __name__ == '__main__': 
     air=g3sensor()
-    print air.read("/dev/ttyUSB0")
+    print air.read("/dev/ttyAMA0")
