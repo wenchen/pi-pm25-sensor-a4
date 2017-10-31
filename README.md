@@ -57,6 +57,8 @@ LoadPlugin python
 sudo systemctl restart collectd
 sudo systemctl restart influxdb
 
+7. If you use Grafana, you can import dashboard file pm2.5.json
+
 # Output
 
 python a4.py
