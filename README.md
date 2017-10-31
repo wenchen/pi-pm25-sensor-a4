@@ -16,6 +16,47 @@ give a try
 
     python a4.py
 
+# Intergrate with influxDB and collectd
+1. Install Collectd & influxDB
+sudo apt install collectd influxdb
+
+2. edit /etc/influxdb/influxdb.conf add the following config
+```
+[[collectd]]
+  enabled = true
+  bind-address = ":25827"
+  database = "pm25_db"
+  typesdb = "/etc/influxdb/pm25/"
+```
+
+3. create /etc/influxdb/pm25 and copy types.db to this place
+
+4. copy types.db to /usr/share/collectd/
+
+5. edit /etc/collectd.conf and add the following config
+```
+LoadPlugin network
+LoadPlugin python
+<Plugin network>
+    Server "127.0.0.1" "25827"
+    Forward true
+</Plugin>
+<Plugin python>
+    ModulePath "/home/pi/pi-pm25-sensor-a4"
+    LogTraces true
+    Interactive false
+    Import "monitor_collectd"
+    <Module monitor_collectd>
+        hostname "room-3f"
+        dev "/dev/ttyAMA0"
+    </Module>
+</Plugin>
+```
+
+6. restart collectd and influxdb
+sudo systemctl restart collectd
+sudo systemctl restart influxdb
+
 # Output
 
 python a4.py
