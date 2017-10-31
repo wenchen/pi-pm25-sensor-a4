@@ -18,7 +18,9 @@ give a try
 
 # Intergrate with influxDB and collectd
 1. Install Collectd & influxDB
+```
 sudo apt install collectd influxdb
+```
 
 2. edit /etc/influxdb/influxdb.conf add the following config
 ```
@@ -54,8 +56,10 @@ LoadPlugin python
 ```
 
 6. restart collectd and influxdb
+```
 sudo systemctl restart collectd
 sudo systemctl restart influxdb
+```
 
 7. If you use Grafana, you can import dashboard file pm2.5.json
 
@@ -65,6 +69,9 @@ python a4.py
 [21, 32, 31, 947, 1963, 5959, 35, 0, 0]
 
 [pm1, pm10, pm2.5, 0.3um, 0.5um, 1.0um, 2.5um, 5.0um, 10um]
+
+# Warning
+    remove serial console ralated config from cmdline.txt
 
 # to stop  sysrq: SysRq : HELP : ...... messag
     echo 0 > /proc/sys/kernel/sysrq
