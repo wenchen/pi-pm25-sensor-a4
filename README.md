@@ -1,5 +1,5 @@
 # CP-15-A4-CG
-Read Partitle Matter (PM) data with [A4 Sensor](https://www.aliexpress.com/store/product/Laser-PM2-5-particle-mass-concentration-sensor-A4-dust-dust-sensors-INSAN-CP-15-A4/1725971_32637917424.html).
+Read Particulate Matter (PM) data with [A4 Sensor](https://www.aliexpress.com/store/product/Laser-PM2-5-particle-mass-concentration-sensor-A4-dust-dust-sensors-INSAN-CP-15-A4/1725971_32637917424.html).
 Added ability to intergrate with [InfluxDB](https://github.com/influxdata/influxdb) by using [collectd](https://github.com/collectd/collectd).
 
 # Installation
