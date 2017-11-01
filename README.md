@@ -1,28 +1,38 @@
 # CP-15-A4-CG
-read pm data from a4 sensor with python
+Read Particulate Matter (PM) data with [A4 Sensor](https://www.aliexpress.com/store/product/Laser-PM2-5-particle-mass-concentration-sensor-A4-dust-dust-sensors-INSAN-CP-15-A4/1725971_32637917424.html).
+Added ability to intergrate with [InfluxDB](https://github.com/influxdata/influxdb) by using [collectd](https://github.com/collectd/collectd).
 
-# install and run
+# Installation
 
-download a4.py and install python modules
+## Prerequisites
+- Python 2
+- [pyserial](https://github.com/pyserial/pyserial), `pip install pyserial`
 
-    apt-get install python-pip python-serial
+## Quick Start
 
-check your tty device (ttyUSB0 or ttyAMA0)
-update a4.py last line
-    
-    print air.read("/dev/ttyAMA0") // update device
+1. Obtain the location of serial device (e.g. `/dev/ttyUSB0`)
+2. Update the last line of `a4.py` with that location
 
-give a try
+```python
+print air.read("/dev/ttyAMA0") // update device
+```
 
-    python a4.py
+3. Test run
 
-# Intergrate with influxDB and collectd
+```
+python a4.py
+```
+
+## Intergrate with InfluxDB and collectd
+
 1. Install Collectd & influxDB
+
 ```
 sudo apt install collectd influxdb
 ```
 
-2. edit /etc/influxdb/influxdb.conf add the following config
+2. Edit /etc/influxdb/influxdb.conf with following content:
+
 ```
 [[collectd]]
   enabled = true
@@ -31,11 +41,16 @@ sudo apt install collectd influxdb
   typesdb = "/etc/influxdb/pm25/"
 ```
 
-3. create /etc/influxdb/pm25 and copy types.db to this place
+3.
 
-4. copy types.db to /usr/share/collectd/
+```
+mkdir -p /etc/influxdb/pm25
+cp types.db /etc/influxdb/pm25
+ln -s /etc/influxdb/pm25/types.db /usr/share/collectd/types.db
+```
 
-5. edit /etc/collectd.conf and add the following config
+4. Change /etc/collectd.conf with following content
+
 ```
 LoadPlugin network
 LoadPlugin python
@@ -55,23 +70,21 @@ LoadPlugin python
 </Plugin>
 ```
 
-6. restart collectd and influxdb
+5. Restart collectd and Influxdb
 ```
 sudo systemctl restart collectd
 sudo systemctl restart influxdb
 ```
 
-7. If you use Grafana, you can import dashboard file pm2.5.json
+NOTE: While using Grafana, one may import dashboard from `pm2.5.json`
 
-# Output
+# Usage
 
 python a4.py
 [21, 32, 31, 947, 1963, 5959, 35, 0, 0]
 
 [pm1, pm10, pm2.5, 0.3um, 0.5um, 1.0um, 2.5um, 5.0um, 10um]
 
-# Warning
-    remove serial console ralated config from cmdline.txt
-
-# to stop  sysrq: SysRq : HELP : ...... messag
-    echo 0 > /proc/sys/kernel/sysrq
+# Notes
+- Remember to remove any serial console related configurations from `cmdline.txt`
+- To stop any messages like `sysrq: Sysrq : HELP : .....`: `echo 0 > /proc/sys/kernal/sysrq`
