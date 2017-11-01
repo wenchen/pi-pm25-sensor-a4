@@ -14,7 +14,7 @@ Added ability to intergrate with [InfluxDB](https://github.com/influxdata/influx
 2. Update the last line of `a4.py` with that location
 
 ```python
-    print air.read("/dev/ttyAMA0") // update device
+print air.read("/dev/ttyAMA0") // update device
 ```
 
 3. Test run
